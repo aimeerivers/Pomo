@@ -7,8 +7,23 @@
         air.NativeApplication.nativeApplication.icon.bitmaps = [event.target.content.bitmapData]; 
     } 
 
+    var minutes_for_pomodoro = 25;
+    var pomodoro_timer = new air.Timer(1000 * 60 * minutes_for_pomodoro);
+    var pomodoro_start_time = new Date();
+
     function start_pomodoro() {
-      alert('pomodoro started');
+      if (pomodoro_timer.running) {
+        time_now = new Date();
+        time_elapsed = (time_now - pomodoro_start_time)
+        minutes_elapsed = Math.round(time_elapsed / (1000 * 60))
+        minutes_left = minutes_for_pomodoro - minutes_elapsed
+        alert('already running: you have: ' + minutes_left + ' minutes to go');
+      }
+      else {
+        pomodoro_timer.start();
+        pomodoro_start_time = new Date();
+        alert('pomodoro started');
+      }
     }
      
     air.NativeApplication.nativeApplication.autoExit = true; 
