@@ -1,15 +1,38 @@
 <html> 
-  <head> 
-    <title>Hello World</title> 
-    <script type="text/javascript" src="AIRAliases.js"></script> 
-    <script type="text/javascript"> 
-      function appLoad(){ 
-        air.trace("Hello World"); 
-      }  
-    </script> 
-  </head> 
-  <body onLoad="appLoad()"> 
-    <h1>Hello World</h1> 
-  </body> 
+<head> 
+<script src="AIRAliases.js" language="JavaScript" type="text/javascript"></script> 
+<script language="JavaScript" type="text/javascript"> 
+    var iconLoadComplete = function(event) 
+    { 
+        air.NativeApplication.nativeApplication.icon.bitmaps = [event.target.content.bitmapData]; 
+    } 
+     
+    air.NativeApplication.nativeApplication.autoExit = false; 
+    var iconLoad = new air.Loader(); 
+    var iconMenu = new air.NativeMenu(); 
+    var exitCommand = iconMenu.addItem(new air.NativeMenuItem("Exit")); 
+    exitCommand.addEventListener(air.Event.SELECT,function(event){ 
+            air.NativeApplication.nativeApplication.icon.bitmaps = []; 
+            air.NativeApplication.nativeApplication.exit(); 
+    }); 
+ 
+    if (air.NativeApplication.supportsSystemTrayIcon) { 
+        air.NativeApplication.nativeApplication.autoExit = false; 
+        iconLoad.contentLoaderInfo.addEventListener(air.Event.COMPLETE,iconLoadComplete); 
+        iconLoad.load(new air.URLRequest("icons/AIRApp_16.png")); 
+        air.NativeApplication.nativeApplication.icon.tooltip = "AIR application"; 
+        air.NativeApplication.nativeApplication.icon.menu = iconMenu; 
+    } 
+ 
+    if (air.NativeApplication.supportsDockIcon) { 
+        iconLoad.contentLoaderInfo.addEventListener(air.Event.COMPLETE,iconLoadComplete); 
+        iconLoad.load(new air.URLRequest("icons/AIRApp_128.png")); 
+        air.NativeApplication.nativeApplication.icon.menu = iconMenu; 
+    } 
+ 
+</script> 
+</head> 
+<body> 
+</body> 
 </html>
 
