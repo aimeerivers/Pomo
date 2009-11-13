@@ -24,6 +24,7 @@
         document.getElementById('reset_pomodoro_button').disabled = false;
         if (air.NativeApplication.supportsSystemTrayIcon) { 
           iconLoad.load(new air.URLRequest("icons/pomodoro-on-16.png")); 
+          air.NativeApplication.nativeApplication.icon.tooltip = "Pomo - pomodoro running"; 
         }
         if (air.NativeApplication.supportsDockIcon) { 
           iconLoad.load(new air.URLRequest("icons/pomodoro-on-128.png")); 
@@ -37,6 +38,7 @@
         document.getElementById('reset_pomodoro_button').disabled = true;
         if (air.NativeApplication.supportsSystemTrayIcon) { 
           iconLoad.load(new air.URLRequest("icons/pomodoro-off-16.png")); 
+          air.NativeApplication.nativeApplication.icon.tooltip = "Pomo - pomodoro stopped"; 
         }
         if (air.NativeApplication.supportsDockIcon) { 
           iconLoad.load(new air.URLRequest("icons/pomodoro-off-128.png")); 
@@ -140,7 +142,7 @@
         air.NativeApplication.nativeApplication.autoExit = false; 
         iconLoad.contentLoaderInfo.addEventListener(air.Event.COMPLETE,iconLoadComplete); 
         iconLoad.load(new air.URLRequest("icons/pomodoro-off-16.png")); 
-        air.NativeApplication.nativeApplication.icon.tooltip = "AIR application"; 
+        air.NativeApplication.nativeApplication.icon.tooltip = "Pomo"; 
         air.NativeApplication.nativeApplication.icon.menu = iconMenu; 
       } 
    
