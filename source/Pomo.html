@@ -48,7 +48,7 @@
       function start_pomodoro() {
         nativeWindow.visible = false;
         if (pomodoro_timer.running) {
-          alert('already running! you have ' + time_remaining_in_minutes() + ' to go.');
+          deliver_notification('already running! you have ' + time_remaining_in_minutes() + ' to go.');
           return;
         }
         minutes_for_pomodoro = document.getElementById('minutes_for_pomodoro').value;
@@ -57,19 +57,19 @@
         pomodoro_timer.start();
         pomodoro_start_time = new Date();
         start_pomodoro_actions();
-        alert('pomodoro started: have a great ' + minutes_for_pomodoro + ' minutes!');
+        deliver_notification('pomodoro started: have a great ' + minutes_for_pomodoro + ' minutes!');
       }
 
       function end_pomodoro() {
         pomodoro_timer.stop();
         stop_pomodoro_actions();
-        alert('that was lengendary!');
+        deliver_notification('that was lengendary!');
       }
 
       function reset_pomodoro() {
         pomodoro_timer.stop();
         stop_pomodoro_actions();
-        alert('not a good one? never mind, next time may be better.');
+        deliver_notification('not a good one? never mind, next time may be better.');
       }
 
       function time_remaining_in_minutes() {
@@ -102,6 +102,10 @@
           s = "0" + s;
         }
         return m + ":" + s;
+      }
+
+      function deliver_notification(msg) {
+        alert(msg);
       }
        
       air.NativeApplication.nativeApplication.autoExit = true; 
