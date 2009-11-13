@@ -10,11 +10,25 @@
       var minutes_for_pomodoro = 25;
       var milliseconds_for_pomodoro = (1000 * 60 * minutes_for_pomodoro);
       var pomodoro_timer = new air.Timer(milliseconds_for_pomodoro);
-      pomodoro_timer.addEventListener(air.TimerEvent.TIMER, stop_pomodoro);
+      pomodoro_timer.addEventListener(air.TimerEvent.TIMER, end_pomodoro);
       var pomodoro_start_time = new Date();
 
       function show_preferences() {
         nativeWindow.visible = true;
+      }
+
+      function start_pomodoro_actions() {
+        startPomodoroCommand.enabled = false;
+        resetPomodoroCommand.enabled = true;
+        document.getElementById('start_pomodoro_button').disabled = true;
+        document.getElementById('reset_pomodoro_button').disabled = false;
+      }
+
+      function stop_pomodoro_actions() {
+        startPomodoroCommand.enabled = true;
+        resetPomodoroCommand.enabled = false;
+        document.getElementById('start_pomodoro_button').disabled = false;
+        document.getElementById('reset_pomodoro_button').disabled = true;
       }
 
       function start_pomodoro() {
@@ -28,22 +42,19 @@
         pomodoro_timer.delay = milliseconds_for_pomodoro;
         pomodoro_timer.start();
         pomodoro_start_time = new Date();
-        startPomodoroCommand.enabled = false;
-        resetPomodoroCommand.enabled = true;
+        start_pomodoro_actions();
         alert('pomodoro started: have a great ' + minutes_for_pomodoro + ' minutes!');
       }
 
-      function stop_pomodoro() {
+      function end_pomodoro() {
         pomodoro_timer.stop();
-        startPomodoroCommand.enabled = true;
-        resetPomodoroCommand.enabled = false;
+        stop_pomodoro_actions();
         alert('that was lengendary!');
       }
 
       function reset_pomodoro() {
         pomodoro_timer.stop();
-        startPomodoroCommand.enabled = true;
-        resetPomodoroCommand.enabled = false;
+        stop_pomodoro_actions();
         alert('not a good one? never mind, next time may be better.');
       }
 
@@ -135,7 +146,8 @@
     <form id='pomo_form' onsubmit='start_pomodoro(); return false;'>
       <label for='minutes_for_pomodoro'>Pomodoro time</label>
       <input type='text' id='minutes_for_pomodoro' value='25' />
-      <input type='submit' value='Start Pomodoro' />
+      <input type='submit' value='Start Pomodoro' id='start_pomodoro_button' />
+      <input type='button' value='Reset Pomodoro' id='reset_pomodoro_button' onclick='reset_pomodoro();' disabled='disabled' />
     </form>
   </body> 
 </html>
