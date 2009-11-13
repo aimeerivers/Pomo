@@ -1,6 +1,8 @@
 <html> 
   <head> 
     <script src="AIRAliases.js" language="JavaScript" type="text/javascript"></script> 
+    <script src="webtoolkit.url.js" language="JavaScript" type="text/javascript"></script> 
+
     <script language="JavaScript" type="text/javascript"> 
       var iconLoadComplete = function(event) 
       { 
@@ -56,18 +58,21 @@
         pomodoro_timer.delay = milliseconds_for_pomodoro;
         pomodoro_timer.start();
         pomodoro_start_time = new Date();
+        sing_pomodoro('start');
         start_pomodoro_actions();
         deliver_notification('pomodoro started: have a great ' + minutes_for_pomodoro + ' minutes!');
       }
 
       function end_pomodoro() {
         pomodoro_timer.stop();
+        sing_pomodoro('finish');
         stop_pomodoro_actions();
         deliver_notification('that was lengendary!');
       }
 
       function reset_pomodoro() {
         pomodoro_timer.stop();
+        sing_pomodoro('interrupt');
         stop_pomodoro_actions();
         deliver_notification('not a good one? never mind, next time may be better.');
       }
@@ -106,6 +111,15 @@
 
       function deliver_notification(msg) {
         alert(msg);
+      }
+
+      function sing_pomodoro(action) {
+        return;
+        url = 'http://sing-pomodoro.heroku.com/' + action;
+        name = Url.encode('aimee daniells <aimee@edendevelopment.co.uk>');
+        var urlRequest = new air.URLRequest(url + '/' + name);
+        urlRequest.method = air.URLRequestMethod.POST;
+        air.navigateToURL(urlRequest);
       }
        
       air.NativeApplication.nativeApplication.autoExit = true; 
