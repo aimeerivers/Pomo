@@ -23,6 +23,7 @@
           pomodoro_timer.addEventListener(air.TimerEvent.TIMER, stop_pomodoro);
           pomodoro_timer.start();
           pomodoro_start_time = new Date();
+          nativeWindow.visible = false;
           alert('pomodoro started');
         }
       }
