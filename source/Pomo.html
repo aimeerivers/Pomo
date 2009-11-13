@@ -1,62 +1,70 @@
 <html> 
-<head> 
-<script src="AIRAliases.js" language="JavaScript" type="text/javascript"></script> 
-<script language="JavaScript" type="text/javascript"> 
-    var iconLoadComplete = function(event) 
-    { 
+  <head> 
+    <script src="AIRAliases.js" language="JavaScript" type="text/javascript"></script> 
+    <script language="JavaScript" type="text/javascript"> 
+      var iconLoadComplete = function(event) 
+      { 
         air.NativeApplication.nativeApplication.icon.bitmaps = [event.target.content.bitmapData]; 
-    } 
+      } 
 
-    var minutes_for_pomodoro = 25;
-    var pomodoro_timer = new air.Timer(1000 * 60 * minutes_for_pomodoro);
-    var pomodoro_start_time = new Date();
+      var minutes_for_pomodoro = 25;
+      var pomodoro_timer = new air.Timer(1000 * 60 * minutes_for_pomodoro);
+      var pomodoro_start_time = new Date();
 
-    function start_pomodoro() {
-      if (pomodoro_timer.running) {
-        time_now = new Date();
-        time_elapsed = (time_now - pomodoro_start_time)
-        minutes_elapsed = Math.round(time_elapsed / (1000 * 60))
-        minutes_left = minutes_for_pomodoro - minutes_elapsed
-        alert('already running: you have: ' + minutes_left + ' minutes to go');
+      function start_pomodoro() {
+        if (pomodoro_timer.running) {
+          time_now = new Date();
+          time_elapsed = (time_now - pomodoro_start_time)
+          minutes_elapsed = Math.round(time_elapsed / (1000 * 60))
+          minutes_left = minutes_for_pomodoro - minutes_elapsed
+          alert('already running: you have: ' + minutes_left + ' minutes to go');
+        }
+        else {
+          pomodoro_timer.addEventListener(air.TimerEvent.TIMER, stop_pomodoro);
+          pomodoro_timer.start();
+          pomodoro_start_time = new Date();
+          alert('pomodoro started');
+        }
       }
-      else {
-        pomodoro_timer.start();
-        pomodoro_start_time = new Date();
-        alert('pomodoro started');
-      }
-    }
-     
-    air.NativeApplication.nativeApplication.autoExit = true; 
-    var iconLoad = new air.Loader(); 
-    var iconMenu = new air.NativeMenu(); 
-    var startPomodoroCommand = iconMenu.addItem(new air.NativeMenuItem("Start Pomodoro")); 
-    var exitCommand = iconMenu.addItem(new air.NativeMenuItem("Exit")); 
 
-    startPomodoroCommand.addEventListener(air.Event.SELECT,function(event) {
-      start_pomodoro();
-    });
-    exitCommand.addEventListener(air.Event.SELECT,function(event){ 
-            air.NativeApplication.nativeApplication.icon.bitmaps = []; 
-            air.NativeApplication.nativeApplication.exit(); 
-    }); 
- 
-    if (air.NativeApplication.supportsSystemTrayIcon) { 
+      function stop_pomodoro() {
+        pomodoro_timer.stop();
+        alert('that was lengendary!');
+      }
+       
+      air.NativeApplication.nativeApplication.autoExit = true; 
+      var iconLoad = new air.Loader(); 
+      var iconMenu = new air.NativeMenu(); 
+      var startPomodoroCommand = iconMenu.addItem(new air.NativeMenuItem("Start Pomodoro")); 
+      var exitCommand = iconMenu.addItem(new air.NativeMenuItem("Exit")); 
+
+      startPomodoroCommand.addEventListener(air.Event.SELECT,function(event) {
+        start_pomodoro();
+      });
+
+      exitCommand.addEventListener(air.Event.SELECT,function(event){ 
+        air.NativeApplication.nativeApplication.icon.bitmaps = []; 
+        air.NativeApplication.nativeApplication.exit(); 
+      }); 
+   
+      if (air.NativeApplication.supportsSystemTrayIcon) { 
         air.NativeApplication.nativeApplication.autoExit = false; 
         iconLoad.contentLoaderInfo.addEventListener(air.Event.COMPLETE,iconLoadComplete); 
         iconLoad.load(new air.URLRequest("icons/AIRApp_16.png")); 
         air.NativeApplication.nativeApplication.icon.tooltip = "AIR application"; 
         air.NativeApplication.nativeApplication.icon.menu = iconMenu; 
-    } 
- 
-    if (air.NativeApplication.supportsDockIcon) { 
+      } 
+   
+      if (air.NativeApplication.supportsDockIcon) { 
         iconLoad.contentLoaderInfo.addEventListener(air.Event.COMPLETE,iconLoadComplete); 
         iconLoad.load(new air.URLRequest("icons/AIRApp_128.png")); 
         air.NativeApplication.nativeApplication.icon.menu = iconMenu; 
-    } 
- 
-</script> 
-</head> 
-<body> 
-</body> 
+      } 
+   
+    </script> 
+  </head> 
+
+  <body> 
+  </body> 
 </html>
 
