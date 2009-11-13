@@ -13,8 +13,14 @@
       pomodoro_timer.addEventListener(air.TimerEvent.TIMER, stop_pomodoro);
       var pomodoro_start_time = new Date();
 
+      function show_preferences() {
+        nativeWindow.visible = true;
+      }
+
       function start_pomodoro() {
+        nativeWindow.visible = false;
         if (pomodoro_timer.running) {
+          alert('already running! you have ' + time_remaining_in_minutes() + ' to go.');
           return;
         }
         minutes_for_pomodoro = document.getElementById('minutes_for_pomodoro').value;
@@ -22,7 +28,6 @@
         pomodoro_timer.delay = milliseconds_for_pomodoro;
         pomodoro_timer.start();
         pomodoro_start_time = new Date();
-        nativeWindow.visible = false;
         startPomodoroCommand.enabled = false;
         resetPomodoroCommand.enabled = true;
         alert('pomodoro started: have a great ' + minutes_for_pomodoro + ' minutes!');
@@ -42,17 +47,21 @@
         alert('not a good one? never mind, next time may be better.');
       }
 
-      function update_time_remaining() {
+      function time_remaining_in_minutes() {
         if (pomodoro_timer.running) {
           time_now = new Date();
           time_elapsed = (time_now - pomodoro_start_time);
           time_remaining = milliseconds_for_pomodoro - time_elapsed;
 
-          pomodoroTimeRemaining.label = milliseconds_to_minutes(time_remaining);
+          return milliseconds_to_minutes(time_remaining);
         }
         else {
-          pomodoroTimeRemaining.label = milliseconds_to_minutes(milliseconds_for_pomodoro);
+          return milliseconds_to_minutes(milliseconds_for_pomodoro);
         }
+      }
+
+      function update_time_remaining() {
+        pomodoroTimeRemaining.label = time_remaining_in_minutes();
       }
 
 
@@ -79,9 +88,14 @@
       });
 
       var pomodoroTimeRemaining = iconMenu.addItem(new air.NativeMenuItem("25:00"));
+      var preferencesCommand = iconMenu.addItem(new air.NativeMenuItem("Preferences ...")); 
       var startPomodoroCommand = iconMenu.addItem(new air.NativeMenuItem("Start Pomodoro")); 
       var resetPomodoroCommand = iconMenu.addItem(new air.NativeMenuItem("Reset Pomodoro")); 
       var exitCommand = iconMenu.addItem(new air.NativeMenuItem("Exit")); 
+
+      preferencesCommand.addEventListener(air.Event.SELECT,function(event) {
+        show_preferences();
+      });
 
       startPomodoroCommand.addEventListener(air.Event.SELECT,function(event) {
         start_pomodoro();
