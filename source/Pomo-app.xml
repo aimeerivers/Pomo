@@ -2,7 +2,7 @@
 <application xmlns="http://ns.adobe.com/air/application/1.5"> 
   <id>com.edendevelopment.Pomo</id> 
   <version>0.1</version> 
-  <filename>Pomo </filename> 
+  <filename>Pomo</filename> 
   <initialWindow> 
     <content>Pomo.html</content> 
     <visible>true</visible> 
