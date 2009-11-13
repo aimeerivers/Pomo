@@ -26,24 +26,42 @@
           pomodoro_timer.start();
           pomodoro_start_time = new Date();
           nativeWindow.visible = false;
+          startPomodoroCommand.enabled = false;
+          resetPomodoroCommand.enabled = true;
           alert('pomodoro started: have a great ' + minutes_for_pomodoro + ' minutes!');
         }
       }
 
       function stop_pomodoro() {
         pomodoro_timer.stop();
+        startPomodoroCommand.enabled = true;
+        resetPomodoroCommand.enabled = false;
         alert('that was lengendary!');
+      }
+
+      function reset_pomodoro() {
+        pomodoro_timer.stop();
+        startPomodoroCommand.enabled = true;
+        resetPomodoroCommand.enabled = false;
+        alert('not a good one? never mind, next time may be better.');
       }
        
       air.NativeApplication.nativeApplication.autoExit = true; 
       var iconLoad = new air.Loader(); 
       var iconMenu = new air.NativeMenu(); 
       var startPomodoroCommand = iconMenu.addItem(new air.NativeMenuItem("Start Pomodoro")); 
+      var resetPomodoroCommand = iconMenu.addItem(new air.NativeMenuItem("Reset Pomodoro")); 
       var exitCommand = iconMenu.addItem(new air.NativeMenuItem("Exit")); 
 
       startPomodoroCommand.addEventListener(air.Event.SELECT,function(event) {
         start_pomodoro();
       });
+
+      resetPomodoroCommand.addEventListener(air.Event.SELECT,function(event) {
+        reset_pomodoro();
+      });
+
+      resetPomodoroCommand.enabled = false;
 
       exitCommand.addEventListener(air.Event.SELECT,function(event){ 
         air.NativeApplication.nativeApplication.icon.bitmaps = []; 
