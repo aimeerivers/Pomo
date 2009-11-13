@@ -9,6 +9,7 @@
 
       var minutes_for_pomodoro = 25;
       var pomodoro_timer = new air.Timer(1000 * 60 * minutes_for_pomodoro);
+      pomodoro_timer.addEventListener(air.TimerEvent.TIMER, stop_pomodoro);
       var pomodoro_start_time = new Date();
 
       function start_pomodoro() {
@@ -20,11 +21,12 @@
           alert('already running: you have: ' + minutes_left + ' minutes to go');
         }
         else {
-          pomodoro_timer.addEventListener(air.TimerEvent.TIMER, stop_pomodoro);
+          minutes_for_pomodoro = document.getElementById('minutes_for_pomodoro').value;
+          pomodoro_timer.delay = 1000 * 60 * minutes_for_pomodoro;
           pomodoro_timer.start();
           pomodoro_start_time = new Date();
           nativeWindow.visible = false;
-          alert('pomodoro started');
+          alert('pomodoro started: have a great ' + minutes_for_pomodoro + ' minutes!');
         }
       }
 
