@@ -8,28 +8,24 @@
       } 
 
       var minutes_for_pomodoro = 25;
-      var pomodoro_timer = new air.Timer(1000 * 60 * minutes_for_pomodoro);
+      var milliseconds_for_pomodoro = (1000 * 60 * minutes_for_pomodoro);
+      var pomodoro_timer = new air.Timer(milliseconds_for_pomodoro);
       pomodoro_timer.addEventListener(air.TimerEvent.TIMER, stop_pomodoro);
       var pomodoro_start_time = new Date();
 
       function start_pomodoro() {
         if (pomodoro_timer.running) {
-          time_now = new Date();
-          time_elapsed = (time_now - pomodoro_start_time)
-          minutes_elapsed = Math.round(time_elapsed / (1000 * 60))
-          minutes_left = minutes_for_pomodoro - minutes_elapsed
-          alert('already running: you have: ' + minutes_left + ' minutes to go');
+          return;
         }
-        else {
-          minutes_for_pomodoro = document.getElementById('minutes_for_pomodoro').value;
-          pomodoro_timer.delay = 1000 * 60 * minutes_for_pomodoro;
-          pomodoro_timer.start();
-          pomodoro_start_time = new Date();
-          nativeWindow.visible = false;
-          startPomodoroCommand.enabled = false;
-          resetPomodoroCommand.enabled = true;
-          alert('pomodoro started: have a great ' + minutes_for_pomodoro + ' minutes!');
-        }
+        minutes_for_pomodoro = document.getElementById('minutes_for_pomodoro').value;
+        milliseconds_for_pomodoro = (1000 * 60 * minutes_for_pomodoro);
+        pomodoro_timer.delay = milliseconds_for_pomodoro;
+        pomodoro_timer.start();
+        pomodoro_start_time = new Date();
+        nativeWindow.visible = false;
+        startPomodoroCommand.enabled = false;
+        resetPomodoroCommand.enabled = true;
+        alert('pomodoro started: have a great ' + minutes_for_pomodoro + ' minutes!');
       }
 
       function stop_pomodoro() {
@@ -45,10 +41,44 @@
         resetPomodoroCommand.enabled = false;
         alert('not a good one? never mind, next time may be better.');
       }
+
+      function update_time_remaining() {
+        if (pomodoro_timer.running) {
+          time_now = new Date();
+          time_elapsed = (time_now - pomodoro_start_time);
+          time_remaining = milliseconds_for_pomodoro - time_elapsed;
+
+          pomodoroTimeRemaining.label = milliseconds_to_minutes(time_remaining);
+        }
+        else {
+          pomodoroTimeRemaining.label = milliseconds_to_minutes(milliseconds_for_pomodoro);
+        }
+      }
+
+
+      function milliseconds_to_minutes(millis) {
+        var seconds = millis / 1000;
+        var m = Math.floor(seconds/60);
+        var s = Math.round(seconds - (m * 60));
+
+        if (m < 10) {
+          m = "0" + m;
+        }
+        if (s < 10) {
+          s = "0" + s;
+        }
+        return m + ":" + s;
+      }
        
       air.NativeApplication.nativeApplication.autoExit = true; 
       var iconLoad = new air.Loader(); 
       var iconMenu = new air.NativeMenu(); 
+
+      iconMenu.addEventListener(air.Event.DISPLAYING, function(event) {
+        update_time_remaining();
+      });
+
+      var pomodoroTimeRemaining = iconMenu.addItem(new air.NativeMenuItem("25:00"));
       var startPomodoroCommand = iconMenu.addItem(new air.NativeMenuItem("Start Pomodoro")); 
       var resetPomodoroCommand = iconMenu.addItem(new air.NativeMenuItem("Reset Pomodoro")); 
       var exitCommand = iconMenu.addItem(new air.NativeMenuItem("Exit")); 
@@ -60,7 +90,8 @@
       resetPomodoroCommand.addEventListener(air.Event.SELECT,function(event) {
         reset_pomodoro();
       });
-
+  
+      pomodoroTimeRemaining.enabled = false;
       resetPomodoroCommand.enabled = false;
 
       exitCommand.addEventListener(air.Event.SELECT,function(event){ 
