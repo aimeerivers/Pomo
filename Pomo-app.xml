@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<application xmlns="http://ns.adobe.com/air/application/1.5"> 
+  <id>com.edendevelopment.Pomo</id> 
+  <version>0.1</version> 
+  <filename>Pomo </filename> 
+  <initialWindow> 
+    <content>Pomo.html</content> 
+    <visible>true</visible> 
+    <width>400</width> 
+    <height>200</height> 
+  </initialWindow> 
+</application>
+
